@@ -1,4 +1,3 @@
-
 # Corrective Maintenance Analysis
 
 ![telco-image](assets/images/intro.png)
