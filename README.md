@@ -1,6 +1,7 @@
 # Corrective Maintenance Analysis
 
 ![telco-image](assets/images/intro.png)
+[Datasets](assets/datasets)
 [Interactive Report](https://app.powerbi.com/view?r=eyJrIjoiNzYwODcyYjEtYjhhOC00N2VjLTlmMjEtMjQ0NjRhMDY4MmZjIiwidCI6ImRmODY3OWNkLWE4MGUtNDVkOC05OWFjLWM4M2VkN2ZmOTVhMCJ9)  
 
 ## Table of Contents
@@ -81,7 +82,7 @@ Basic exploratory analysis provided key insights:
 - **Total Closed Jobs:** 7,972.
 - **Total Approved Amount:** Approximately 604 million.
 These initial insights set the stage for deeper analysis into job efficiency and financial performance.
-
+[Notebook Link](assets/cm_data_EDA.ipynb)
 
 ## SQL Analysis
 ### Database Setup
@@ -163,7 +164,7 @@ Data transformation was done within Power Query to clean and refine the dataset:
 ```DAX
 Calendar = CALENDAR(DATE(2022,01,01), TODAY())
 ```
-Join the matrix dimension to the non-routine fact table on “site_id”  with a one to many relationship as we already made sure site_ids are unique values, and can be used as primary key (one) to be linked with site_ids in non routine table which occurs multiple times (many). Also joined the calendar to all date related columns in the non-routine table, one active and the rest inactive relationships, only one active relationship at a time.  
+Join the matrix dimension to the non-routine fact table on “site_id”  with a one to many relationship as we already made sure site_ids are unique values, and can be used as primary key (one) to be linked with site_ids in non routine table which occurs multiple times (many). Also joined the calendar to all date related columns in the non-routine table, one active and the rest inactive relationships, only one active relationship at a time. ![model-image](assets/images/data_model.png)
 
 ### Visualizations and Insights
 Using the cleaned and modeled data, several visualizations and DAX expressions were created to answer key business questions:
@@ -175,7 +176,7 @@ Total Revenue = SUM('non routine (fact)'[Total_Approved])
 Total Expense = SUM('non routine (fact)'[Total_Expense])
 Profit = [Total Revenue] - [Total Expense]
 ```
-Visualization: A stacked bar chart was used to depict total revenue, total expense, and profit by job type and region. The analysis revealed that tower painting generated the most profit (52 million), while replacement of oil seals had the least (32k). The Ogun region produced the most profit (66 million), closely followed by Kaduna (51 million).
+#####Visualization: A stacked bar chart was used to depict total revenue, total expense, and profit by job type and region. The analysis revealed that tower painting generated the most profit (52 million), while replacement of oil seals had the least (32k). The Ogun region produced the most profit (66 million), closely followed by Kaduna (51 million). ![profit](assets/images/profit.png)
 #### Job Efficiency
 Business Question: What is the average time taken to complete different types of jobs? 
 Approach: Analyze the time difference between job request and closure dates.
@@ -185,11 +186,11 @@ VAR DaystoExecute = DATEDIFF('non routine (fact)'[Approval_Date], 'non routine (
 RETURN IF(DaystoExecute < 0, 0, DaystoExecute)
 ```
 The average is matched with top type, we have handled the negative values but we have some extremely high values, some job types also have occurrence of less than 20 - so we consider those as outliers and filter those out.
-Visualization: We discovered that the palisade fence repairs are the quickest to close with an average of 5 days while fortification took the longest with an average of 86 days. A bar chart was used to depict this information.
+#####Visualization: We discovered that the palisade fence repairs are the quickest to close with an average of 5 days while fortification took the longest with an average of 86 days. A bar chart was used to depict this information.![Job efficiency](assets/images/completion.png) 
 #### Resource Allocation
 Business Question: Are there patterns in the frequency and types of job requests across different regions and times of the year?
 Approach: Use scatter plots or trend analysis to identify hotspots and peak times.
-Visualization: we discovered that site cleanup/environs is done on a big scale in January while site cleanup/fe, security lights and aviation light is also done on a big scale in June. December is where tasks are rarely done.
+#####Visualization: we discovered that site cleanup/environs is done on a big scale in January while site cleanup/fe, security lights and aviation light is also done on a big scale in June. December is where tasks are rarely done.![Job distibution](assets/images/frequency.png) 
 #### Cost Optimization
 Business Question: How can the company optimize the use of spares to reduce costs without compromising service quality?
 Approach: Identify spares with the highest usage and cost, then explore alternative procurement strategies i.e bulk purchasing.
@@ -200,8 +201,8 @@ CALCULATE(
     USERELATIONSHIP('non routine (fact)'[Closure_Date], 'calender (dim)'[Date])
 )
 ```
-We used “userelationship” because the active relationship is the request date. We used a cluster column chart to display the different jobs over the period of 12 months and used top N filter to show only top 5, we this we can see what items are mostly changed in each period and the company can properly plan.
+We used “userelationship” because the active relationship is the request date. We used a cluster column chart to display the different jobs over the period of 12 months and used top N filter to show only top 5, we this we can see what items are mostly changed in each period and the company can properly plan.![Jobs by month](assets/images/top_jobs.png) 
 
 
 ## Project Summary
-This project aims to streamline and optimize telecom maintenance processes, classifying job types, analyzing costs, and improving resource allocation. Key objectives include detecting duplicated jobs, classifying faults and payments, cleaning and preparing data, and conducting data analyses using Excel, SQL, Pandas, and Power BI. By addressing inefficiencies in job handling, the project provides insights for profitability, job efficiency, and cost optimization. [Click here for Interactive Power BI Report](https://app.powerbi.com/view?r=eyJrIjoiNzYwODcyYjEtYjhhOC00N2VjLTlmMjEtMjQ0NjRhMDY4MmZjIiwidCI6ImRmODY3OWNkLWE4MGUtNDVkOC05OWFjLWM4M2VkN2ZmOTVhMCJ9)
+This project aims to streamline and optimize telecom maintenance processes, classifying job types, analyzing costs, and improving resource allocation. Key objectives include detecting duplicated jobs, classifying faults and payments, cleaning and preparing data, and conducting data analyses using Excel, SQL, Pandas, and Power BI. By addressing inefficiencies in job handling, the project provides insights for profitability, job efficiency, and cost optimization. [Click here for Interactive Power BI Report](https://app.powerbi.com/view?r=eyJrIjoiNzYwODcyYjEtYjhhOC00N2VjLTlmMjEtMjQ0NjRhMDY4MmZjIiwidCI6ImRmODY3OWNkLWE4MGUtNDVkOC05OWFjLWM4M2VkN2ZmOTVhMCJ9). [Click here for Presentation](assets/docs/Presentation.pdf)
