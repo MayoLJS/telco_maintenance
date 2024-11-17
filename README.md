@@ -82,7 +82,7 @@ Basic exploratory analysis provided key insights:
 - **Total Closed Jobs:** 7,972.
 - **Total Approved Amount:** Approximately 604 million.
 These initial insights set the stage for deeper analysis into job efficiency and financial performance.
-[Notebook Link](assets/cm_data_EDA.ipynb)
+[Notebook Link](assets/docs/cm_data_EDA.ipynb)
 
 ## SQL Analysis
 ### Database Setup
